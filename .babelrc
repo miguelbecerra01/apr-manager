@@ -1,0 +1,12 @@
+//when webpack runs, tell babel to use env and react to build 
+//https://babeljs.io/docs/en/7.1.0/babel-plugin-transform-class-properties
+{
+    "presets":[
+        "@babel/preset-env",
+        "@babel/preset-react"
+    ],
+    "plugins": [
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-proposal-object-rest-spread"
+    ]
+}

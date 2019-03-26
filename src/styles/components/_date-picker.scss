@@ -1,0 +1,35 @@
+.DateInput__small {
+  width: 120px !important;
+}
+.DateInput_input__small {
+  font-size: $font-size-large !important;
+  line-height: 35px !important;
+}
+
+.CalendarDay__selected_span {
+  background: #2f88bf !important;
+  border: 1px double #28719e !important;
+}
+.CalendarDay__selected_span:active,
+.CalendarDay__selected_span:hover {
+  background: #2f88bf !important;
+  border: 1px double #28719e !important;
+  color: white !important;
+}
+.CalendarDay__selected,
+.CalendarDay__selected:active,
+.CalendarDay__selected:hover {
+  background: #2f88bf !important;
+  border: 1px double #28719e !important;
+  color: white !important;
+}
+.CalendarDay__hovered_span,
+.CalendarDay__hovered_span:hover {
+  background: #2f88bf !important;
+  border: 1px double #28719e !important;
+  color: white !important;
+}
+.CalendarDay__hovered_span:active {
+  background: #2f88bf !important;
+  border: 1px double #28719e !important;
+}
