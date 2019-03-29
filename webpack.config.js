@@ -5,7 +5,7 @@ const webpack = require('webpack');
 //https://github.com/webpack-contrib/mini-css-extract-plugin
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const publicPath = path.join(__dirname, 'public', 'dist');
+const publicPath = path.join(__dirname, 'client', 'public', 'dist');
 
 //https://www.npmjs.com/package/cross-env
 const env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
@@ -25,7 +25,7 @@ module.exports = (env) => {
     const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
     return {
-        entry: ['babel-polyfill', './src/app.js'],
+        entry: ['babel-polyfill', './client/src/app.js'],
         output: {
             path: publicPath,
             filename: 'bundle.js'
@@ -83,7 +83,7 @@ module.exports = (env) => {
         //https://webpack.js.org/configuration/dev-server/
         //replacing for live-server
         devServer: {
-            contentBase: path.join(__dirname, 'public'),
+            contentBase: path.join(__dirname, 'client', 'public'),
             historyApiFallback: true,
             publicPath: '/dist/'
         }

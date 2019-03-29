@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render LoginPage correctly 1`] = `
+<div
+  className="box-layout"
+>
+  <div
+    className="box-layout__box"
+  >
+    <h1
+      className="box-layout__title"
+    >
+      Bolerplate
+    </h1>
+    <p>
+      Tag line for app
+    </p>
+    <button
+      className="button"
+      onClick={[Function]}
+    >
+      Login with Google
+    </button>
+    <p>
+      create a new user
+    </p>
+    <span
+      className="is-active"
+    />
+    <br />
+    <label>
+      username: 
+    </label>
+    <input
+      onChange={[Function]}
+      placeholder="username"
+      value=""
+    />
+    <label>
+      password:
+    </label>
+     
+    <input
+      onChange={[Function]}
+      placeholder="password"
+      type="password"
+      value=""
+    />
+    <button
+      onClick={[Function]}
+    >
+        Create Account
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      Login
+    </button>
+  </div>
+</div>
+`;

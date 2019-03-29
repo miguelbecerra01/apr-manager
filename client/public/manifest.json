@@ -1,0 +1,14 @@
+{
+    "short_name": "Boilerplate ",
+    "name": "Boilerplate",
+    "icons": [
+        {
+            "src": "/images/launcher-icon-100x100",
+            "sizes": "100x100",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/index.html",
+    "display": "standalone",
+    "orientation": "portrait"
+}
