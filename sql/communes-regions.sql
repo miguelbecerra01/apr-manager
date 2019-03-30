@@ -1,6 +1,38 @@
  ------------------------------------------------------------
-
 DROP TABLE IF EXISTS communes;
+DROP TABLE IF EXISTS regions;
+
+CREATE TABLE regions (
+  id serial NOT NULL ,
+  name varchar(255) NOT NULL,
+  ordinal_symbol varchar(255),
+  orders int,
+  PRIMARY KEY (id)
+);
+
+
+
+INSERT INTO regions (id, name, ordinal_symbol, orders)
+VALUES
+	(1,'Arica y Parinacota','XV',1),
+	(2,'Tarapacá','I',2),
+	(3,'Antofagasta','II',3),
+	(4,'Atacama','III',4),
+	(5,'Coquimbo','IV',5),
+	(6,'Valparaiso','V',6),
+	(7,'Metropolitana de Santiago','RM',7),
+	(8,'Libertador General Bernardo OHiggins','VI',8),
+	(9,'Maule','VII',9),
+	(10,'Ñuble','XVI',10),
+	(11,'Biobío','VIII',11),
+	(12,'La Araucanía','IX',12),
+	(13,'Los Ríos','XIV',13),
+	(14,'Los Lagos','X',14),
+	(15,'Aisén del General Carlos Ibáñez del Campo','XI',15),
+	(16,'Magallanes y de la Antártica Chilena','XII',16);
+ 
+ 
+
 
 CREATE TABLE communes (
   id serial NOT NULL ,
@@ -360,39 +392,8 @@ VALUES
 	(345,'Torres del Paine',16),
 	(346,'Cabildo',6);
 
- 
- 
-DROP TABLE IF EXISTS regions;
-
-CREATE TABLE regions (
-  id serial NOT NULL ,
-  name varchar(255) NOT NULL,
-  ordinal_symbol varchar(255),
-  orders int,
-  PRIMARY KEY (id)
-);
-
-INSERT INTO regions (id, name, ordinal_symbol, orders)
-VALUES
-	(1,'Arica y Parinacota','XV',1),
-	(2,'Tarapacá','I',2),
-	(3,'Antofagasta','II',3),
-	(4,'Atacama','III',4),
-	(5,'Coquimbo','IV',5),
-	(6,'Valparaiso','V',6),
-	(7,'Metropolitana de Santiago','RM',7),
-	(8,'Libertador General Bernardo OHiggins','VI',8),
-	(9,'Maule','VII',9),
-	(10,'Ñuble','XVI',10),
-	(11,'Biobío','VIII',11),
-	(12,'La Araucanía','IX',12),
-	(13,'Los Ríos','XIV',13),
-	(14,'Los Lagos','X',14),
-	(15,'Aisén del General Carlos Ibáñez del Campo','XI',15),
-	(16,'Magallanes y de la Antártica Chilena','XII',16);
- 
- 
-select * from communes where region_id=8;
+  
+--select * from communes where region_id=8;
 
 
 

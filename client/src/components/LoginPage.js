@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { startLogin, createAccount, loginWithPassword } from '../actions/auth';
 
 //export const LoginPage = ({ startLogin, createAccount }) => {
@@ -54,7 +55,7 @@ export class LoginPage extends React.Component {
                     <label>password:</label> <input type="password" placeholder="password" value={this.state.password} onChange={this.onChangePassword}></input>
                     <button onClick={() => { this.onCreateAccount(this.state.username, this.state.password) }}>  Create Account</button>
                     <button onClick={() => { this.onLoginWithPassword(this.state.username, this.state.password) }}>Login</button>
-
+                    <Link to="/statements"> Pagar mi cuenta como invitado</Link>
                 </div>
             </div>
         )

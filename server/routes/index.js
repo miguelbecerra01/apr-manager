@@ -1,5 +1,5 @@
 const statements = require('./statements');
 
 module.exports = (app) => {
-    app.use('/statements', statements);
-};
+    app.use('/api/statements', statements);
+}; 
