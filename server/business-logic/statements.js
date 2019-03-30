@@ -46,7 +46,7 @@ const getAccountByAccountId = async (accountId) => {
         idStatement: rows.id || '',
         idAccount: rows.id_account || '',
         streetName: rows.street_name || '',
-        houseNumber: rows.houseNumber || '',
+        houseNumber: rows.house_number || '',
         sector: rows.sector || '',
         firstName: rows.first_name || '',
         lastName: rows.last_name || '',
@@ -57,7 +57,7 @@ const getAccountByAccountId = async (accountId) => {
         emissionDate: rows.emission_date || '',
         dueDate: rows.due_date || '',
         ticketNumber: rows.ticket_number || '',
-        billingPeriod: rows.billingPeriod || ''
+        billingPeriod: rows.id_billing_period || ''
     };
 
 };
