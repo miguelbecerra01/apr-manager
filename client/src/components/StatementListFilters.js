@@ -7,9 +7,12 @@ export class StatementListFilters extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            accountId: 'PLC-0382'
+            accountId: 'PLC-0385'
         }
     };
+    componentDidMount() {
+        this.props.startGetStatementByAccountId(this.state.accountId);
+    }
     onChangeAccountInput = (e) => {
         const accountId = e.target.value;
         this.setState(() => ({

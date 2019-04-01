@@ -44,7 +44,7 @@ const getAccountByAccountIdFromDb = async (accountId) => (
                     o.description, 	
                     s.status,
                     s.emission_date,
-                    s.due_date,	
+                    s.due_date,
                     s.ticket_number,
                     s.id_billing_period,
                     s.id_previous_statement

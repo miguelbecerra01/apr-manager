@@ -76,34 +76,34 @@ const getReadingsByStatementId = async (statementId) => {
 
 const getChargesListByStatementId = async (statementId) => {
 
-    const charges = await getChargesListByStatementIdFromDb(statementId);
+    const rows = await getChargesListByStatementIdFromDb(statementId);
 
-    const chargesInfo = [];
+    const charges = [];
 
-    charges.map((charge) => {
-        chargesInfo.push({
+    rows.map((charge) => {
+        charges.push({
             idCharge: charge.id,
             amount: charge.amount,
             idType: charge.charge_type,
             type: charge.description
         })
     });
-    return chargesInfo;
+    return charges;
 };
 
 const getSubsidiesListByAccountId = async (accountId) => {
-    const subsidies = await getSubsidiesListByAccountIdFromDb(accountId);
-    const subsidiesInfo = [];
+    const rows = await getSubsidiesListByAccountIdFromDb(accountId);
+    const subsidies = [];
 
-    subsidies.map((subsidy) => {
-        subsidiesInfo.push({
+    rows.map((subsidy) => {
+        subsidies.push({
             idSubsidy: subsidy.id,
             amount: subsidy.amount,
             idType: subsidy.subsidy_type,
             type: subsidy.description
         });
     });
-    return subsidiesInfo;
+    return subsidies;
 };
 
 const getLastPaymentByAccountId = async (accountId) => {

@@ -9,7 +9,7 @@ export class StatementList extends React.Component {
     render() {
         return (
             <div>
-                <h1>Sus boletas: </h1>
+                <h2>Tu Cuenta: </h2>
                 <div className="list-body">
                     {this.props.statements.length === 0 ? (<span>no registros</span>) :
                         (

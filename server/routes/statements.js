@@ -60,22 +60,22 @@ router.get('/account/:accountId', async (req, res) => {
             return res.status(200).send({ error: 'NO_DATA_FOUND' });
         }
 
-        const accountInfo = await getAccountByAccountId(accountId);
-        const readingsInfo = await getReadingsByStatementId(accountInfo.idStatement)
-        const chargesInfo = await getChargesListByStatementId(accountInfo.idStatement);
-        const subsidiesInfo = await getSubsidiesListByAccountId(accountId);
-        const lastPaymentInfo = await getLastPaymentByAccountId(accountId);
+        const account = await getAccountByAccountId(accountId);
+        const readings = await getReadingsByStatementId(account.idStatement)
+        const charges = await getChargesListByStatementId(account.idStatement);
+        const subsidies = await getSubsidiesListByAccountId(accountId);
+        const lastPayment = await getLastPaymentByAccountId(accountId);
 
         const paymentByConsumption = {
-            chargesInfo,
-            subsidiesInfo
+            charges,
+            subsidies
         }
 
         const statement = {
-            accountInfo,
-            readingsInfo,
+            account,
+            readings,
             paymentByConsumption,
-            lastPaymentInfo
+            lastPayment
         };
 
         res.status(200).send(statement);
@@ -97,5 +97,12 @@ router.get('/account/:accountId/status/:status', async (req, res) => {
     }
 });
 
-
+router.post('/payment', async (req, res) => {
+    try {
+        console.log('llego');
+        res.status(200).send({ ok: 'enviadoOK' })
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
 
