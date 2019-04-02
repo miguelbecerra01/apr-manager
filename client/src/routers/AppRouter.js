@@ -8,7 +8,7 @@ import NotFoundPage from '../components/NotFoundPage';
 import LoginPage from '../components/LoginPage';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
-import StatementListFilters from '../components/StatementListFilters';
+import StatementDashboardPage from '../components/StatementDashboardPage';
 
 export const history = createBrowserHistory();
 
@@ -19,7 +19,7 @@ const AppRouter = () => (
             <Switch>
 
                 <PublicRoute path="/" component={LoginPage} exact={true} />
-                <PrivateRoute path="/statements" component={StatementListFilters} />
+                <PrivateRoute path="/statements" component={StatementDashboardPage} />
                 <PrivateRoute path="/dashboard" component={DashboardPage} />
                 <PrivateRoute path="/help" component={HelpPage} />
                 <Route component={NotFoundPage} />

@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import StatementList from './StatementList';
+
 import { startGetStatementByAccountId } from '../actions/statements';
 
-export class StatementListFilters extends React.Component {
+export class StatementFilters extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,7 +11,7 @@ export class StatementListFilters extends React.Component {
         }
     };
     componentDidMount() {
-        this.props.startGetStatementByAccountId(this.state.accountId);
+        // this.props.startGetStatementByAccountId(this.state.accountId);
     }
     onChangeAccountInput = (e) => {
         const accountId = e.target.value;
@@ -21,7 +21,7 @@ export class StatementListFilters extends React.Component {
     };
     onGetStatementByAccountId = (e) => {
         e.preventDefault();
-        this.props.startGetStatementByAccountId(this.state.accountId);
+        this.props.startGetStatement('PLC-0385');
 
     }
     render() {
@@ -32,16 +32,16 @@ export class StatementListFilters extends React.Component {
                     <input placeholder="Nro de cuenta" onChange={this.onChangeAccountInput} value={this.state.accountId} />
                     <button>Buscar</button>
                 </form>
-                <StatementList statements={this.props.statements} />
+
             </div>
         )
     }
 }
 
-const mapStateToProps = (state) => ({ statements: state.statements });
+const mapStateToProps = (state) => ({ statements: { ...state.statements } });
 
 const mapDispatchToProps = (dispatch) => ({
-    startGetStatementByAccountId: (accountId) => dispatch(startGetStatementByAccountId(accountId))
+    startGetStatement: (accountId) => dispatch(startGetStatementByAccountId(accountId))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(StatementListFilters);
+export default connect(mapStateToProps, mapDispatchToProps)(StatementFilters);

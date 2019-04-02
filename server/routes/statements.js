@@ -1,6 +1,7 @@
 const Router = require('express-promise-router');
 const router = new Router();
-const db = require('../data-access/db');
+const _ = require('lodash');
+
 
 const { getAllStatements,
     getStatementsById,
@@ -99,8 +100,11 @@ router.get('/account/:accountId/status/:status', async (req, res) => {
 
 router.post('/payment', async (req, res) => {
     try {
-        console.log('llego');
-        res.status(200).send({ ok: 'enviadoOK' })
+        const body = _.pick(req.body, ['text']);
+
+
+        console.log(body);
+        res.status(200).send(body);
     } catch (error) {
         res.status(400).send(error);
     }
