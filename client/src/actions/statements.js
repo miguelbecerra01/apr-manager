@@ -23,12 +23,11 @@ export const getMakePayment = (result) => ({
     result
 });
 
-export const startMakePayment = (accountId, totalAmount) => {
+export const startMakePayment = (accountId, totalAmount, ticketNumber) => {
     return (dispatch) => {
-        console.log(totalAmount);
-        return axios.post(`${getApiHost()}/api/statements/payment`, { accountId, totalAmount })
+        return axios.post(`${getApiHost()}/api/statements/payment`, { accountId, totalAmount, ticketNumber })
             .then(res => {
-                console.log(res.data);
+                console.log('startMakePayment', res.data);
                 dispatch(getMakePayment(res.data));
             });
     };

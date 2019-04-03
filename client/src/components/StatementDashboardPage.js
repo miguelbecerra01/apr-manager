@@ -7,20 +7,29 @@ export class StatementDashboardPage extends React.Component {
     constructor(props) {
         super(props);
     }
+
+    componentDidUpdate() {
+        console.log(this.props.payments);
+        if (this.props.payments.hasOwnProperty('urlPayment')) {
+            window.location = this.props.payments.urlPayment;
+        }
+    }
     render() {
         return (
             <div>
                 <h3>Tu cuenta</h3>
                 <StatementFilters />
                 {this.props.statements.hasOwnProperty('account') && <StatementItem statements={this.props.statements} />}
+                {this.props.statements.status && <p>Sin datos o cuenta pendiente por pagar</p>}
             </div>
         );
     }
 }
 const mapStateToProps = (state) => {
-    console.log('StatementDashboardPage', state.statements);
+    console.log('StatementDashboardPage', state)
     return {
-        statements: state.statements
+        statements: state.statements,
+        payments: { ...state.payments.message }
     }
 };
 

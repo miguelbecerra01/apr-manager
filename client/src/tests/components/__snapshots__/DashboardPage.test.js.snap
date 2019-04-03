@@ -2,6 +2,12 @@
 
 exports[`should render DashboardPage correctly 1`] = `
 <div>
-  Dashboard page content your private contents  heres
+  Dashboard page content your private contents  heress
+  <Link
+    replace={false}
+    to="/statements"
+  >
+     Pagar mi cuenta como invitado
+  </Link>
 </div>
 `;

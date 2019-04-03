@@ -11,6 +11,8 @@ const port = process.env.PORT || 3009;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+require('dotenv').config({ path: '.env.development' });
+
 
 app.use(express.static(publicPath));
 

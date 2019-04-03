@@ -1,7 +1,9 @@
 const Router = require('express-promise-router');
 const router = new Router();
 const _ = require('lodash');
-
+const FlowApi = require('../flowapi/flowApi');
+const getFlowApiKeys = require('../flowapi/config');
+const { getApiHost } = require('../utils');
 
 const { getAllStatements,
     getStatementsById,
@@ -58,7 +60,7 @@ router.get('/account/:accountId', async (req, res) => {
         const statements = await getStatementsByAccountId(accountId);
 
         if (statements.length === 0) {
-            return res.status(200).send({ error: 'NO_DATA_FOUND' });
+            return res.status(200).send({ status: 'NO_DATA_FOUND' });
         }
 
         const account = await getAccountByAccountId(accountId);
@@ -98,15 +100,59 @@ router.get('/account/:accountId/status/:status', async (req, res) => {
     }
 });
 
+const getUrlResponseEncoded = (body, status) => {
+    return Buffer(`status=${status}&accountId=${encodeURI(body.accountId)}&ticketNumber=${encodeURI(body.ticketNumber)}`).toString('base64');
+};
+
 router.post('/payment', async (req, res) => {
     try {
-        const body = _.pick(req.body, ['text']);
 
-
+        const body = _.pick(req.body, ['accountId', 'totalAmount', 'ticketNumber']);
         console.log(body);
-        res.status(200).send(body);
+        if (!body.accountId || !body.totalAmount || !body.ticketNumber) {
+            return res.status(400).send('bad request');
+        }
+
+
+        const urlPaymentResultsPage = '/statements/payment/';
+
+        const service = 'payment/create';
+
+        const params = {
+            commerceOrder: body.ticketNumber,
+            subject: 'Pago cuenta cliente Id: ' + body.accountId,
+            currency: 'CLP',
+            amount: body.totalAmount,
+            paymentMethod: 1,
+            email: 'miguelbecerra01@gmail.com',
+            urlConfirmation: getApiHost(req).fullHost + urlPaymentResultsPage + getUrlResponseEncoded(body, 'confirmed'),
+            urlReturn: getApiHost(req).fullHost + urlPaymentResultsPage + getUrlResponseEncoded(body, 'declined'),
+            forward_days_after: 1,
+            forward_times: 2
+        };
+
+        const method = 'POST';
+        const response = await FlowApi.send(service, params, method);
+
+        if (response.status === 200) {
+
+            const url = response.data.url + '?token=' + response.data.token;
+            const message = {
+                flowResponse: response.data,
+                urlPayment: url
+            };
+            return res.status(200).send({ message });
+
+            //TODO: update the payment into DB
+
+        } else if (response.status === 400 || response.status === 401) {
+            return res.status(400).send({ error: response.statusText });
+        } else {
+            throw new Error('Unexpected error ocurred. HTTP_CODE', response.status);
+        }
+
     } catch (error) {
-        res.status(400).send(error);
+        return res.status(400).send({ error });
     }
 });
 

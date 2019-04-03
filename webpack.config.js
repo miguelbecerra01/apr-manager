@@ -15,6 +15,7 @@ const env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 if (env === 'test') {
     require('dotenv').config({ path: '.env.test' });
 } else if (env === 'development') {
+    //read the .env config files 
     require('dotenv').config({ path: '.env.development' });
 }
 
@@ -75,6 +76,10 @@ module.exports = (env) => {
                 'process.env.FIREBASE_PROJECT_ID': JSON.stringify(process.env.FIREBASE_PROJECT_ID),
                 'process.env.FIREBASE_STORAGE_BUCKET': JSON.stringify(process.env.FIREBASE_STORAGE_BUCKET),
                 'process.env.FIREBASE_MESSAGING_SENDER_ID': JSON.stringify(process.env.FIREBASE_MESSAGING_SENDER_ID),
+                'process.env.FLOW_API_KEY': JSON.stringify(process.env.FLOW_API_KEY),
+                'process.env.FLOW_SECRET_KEY': JSON.stringify(process.env.FLOW_SECRET_KEY),
+                'process.env.FLOW_API_URL': JSON.stringify(process.env.FLOW_API_URL),
+                'process.env.FLOW_BASE_URL': JSON.stringify(process.env.FLOW_BASE_URL)
             })
         ],
         //set sourcemap to debug where in the files were an error and not show just bundle.js line 22xxx

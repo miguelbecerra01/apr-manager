@@ -23,13 +23,13 @@ export class StatementItem extends React.Component {
     }
 
     componentDidMount() {
-        console.log('componentDidMount', this.props);
+
         const totalAmountByConsumption = this.state.totalCharges - this.state.totalSubsidies;
         const subTotalPayment = totalAmountByConsumption;
         const comission = (totalAmountByConsumption * 0.01);
         const totalPayment = subTotalPayment + comission;
 
-        console.log(subTotalPayment);
+
         this.setState(() => {
             return {
                 totalAmountByConsumption,
@@ -40,16 +40,15 @@ export class StatementItem extends React.Component {
         })
     }
     onMakePayment = () => {
-        console.log('Hi');
-        // const accountId = this.props.account.accountId;
-        // const totalAmount = this.state.totalPayment;
-        // this.props.startMakePayment(accountId, totalAmount);
+
+        const accountId = this.props.account.idAccount;
+        const totalAmount = this.state.totalPayment;
+        const ticketNumber = this.props.account.ticketNumber;
+        this.props.startMakePayment(accountId, totalAmount, ticketNumber);
     }
     render() {
         return (
             <div>
-                <h3>cuenta  </h3>
-
                 <div>
                     <div>Cuenta</div>
                     <div>
@@ -117,14 +116,14 @@ export class StatementItem extends React.Component {
                         <img width="300px" src="./images/tarjetas.png" />
                     </div>
                     <div>
-                        <button>Pagar tu cuenta</button>
+                        <button onClick={this.onMakePayment}>Pagar tu cuenta</button>
                     </div>
                 </div>
                 <div>
                     <div>Pago en Line</div>
                     <div>
                         <h3>¿Qué quieres pagar?</h3>
-                        <button onClick={this.onMakePayment}>Pago Total $ {this.state.totalAmountByConsumption}</button>
+                        <button >Pago Total $ {this.state.totalAmountByConsumption}</button>
                         {this.state.totalPending && <button>Pago Pendiente $ {this.state.totalPending.amount}</button>}
                     </div>
                     <div>
@@ -142,7 +141,6 @@ export class StatementItem extends React.Component {
 };
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         account: state.statements.account,
         readings: state.statements.readings,
@@ -153,7 +151,7 @@ const mapStateToProps = (state) => {
 
 
 const mapDispatchToProps = (dispatch) => ({
-    startMakePayment: (accountId, totalAmount) => dispatch(startMakePayment(accountId, totalAmount))
+    startMakePayment: (accountId, totalAmount, ticketNumber) => dispatch(startMakePayment(accountId, totalAmount, ticketNumber))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(StatementItem);

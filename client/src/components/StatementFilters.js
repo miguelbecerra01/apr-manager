@@ -11,7 +11,7 @@ export class StatementFilters extends React.Component {
         }
     };
     componentDidMount() {
-        // this.props.startGetStatementByAccountId(this.state.accountId);
+        this.props.startGetStatement(this.state.accountId);
     }
     onChangeAccountInput = (e) => {
         const accountId = e.target.value;
@@ -21,7 +21,7 @@ export class StatementFilters extends React.Component {
     };
     onGetStatementByAccountId = (e) => {
         e.preventDefault();
-        this.props.startGetStatement('PLC-0385');
+        this.props.startGetStatement(this.state.accountId);
 
     }
     render() {
@@ -38,7 +38,10 @@ export class StatementFilters extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => ({ statements: { ...state.statements } });
+const mapStateToProps = (state) => ({
+    statements: { ...state.statements },
+    payments: { ...state.payments }
+});
 
 const mapDispatchToProps = (dispatch) => ({
     startGetStatement: (accountId) => dispatch(startGetStatementByAccountId(accountId))
