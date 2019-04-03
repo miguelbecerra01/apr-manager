@@ -88,8 +88,10 @@ module.exports = (env) => {
         //https://webpack.js.org/configuration/dev-server/
         //replacing for live-server
         devServer: {
+            disableHostCheck: true,
             contentBase: path.join(__dirname, 'client', 'public'),
             historyApiFallback: true,
+            //public: '47888f08.ngrok.io',
             publicPath: '/dist/'
         }
     };

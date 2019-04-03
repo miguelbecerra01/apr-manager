@@ -101,31 +101,41 @@ router.get('/account/:accountId/status/:status', async (req, res) => {
 });
 
 const getUrlResponseEncoded = (body, status) => {
-    return Buffer(`status=${status}&accountId=${encodeURI(body.accountId)}&ticketNumber=${encodeURI(body.ticketNumber)}`).toString('base64');
+
+    const obj = {
+        status: status,
+        accountId: body.accountId,
+        ticketNumber: body.ticketNumber
+    };
+
+
+    return Buffer(JSON.stringify(obj)).toString('base64');
+    // return Buffer(`status=${status}&accountId=${encodeURI(body.accountId)}&ticketNumber=${encodeURI(body.ticketNumber)}`).toString('base64');
 };
 
 router.post('/payment', async (req, res) => {
     try {
 
         const body = _.pick(req.body, ['accountId', 'totalAmount', 'ticketNumber']);
-        console.log(body);
+
         if (!body.accountId || !body.totalAmount || !body.ticketNumber) {
             return res.status(400).send('bad request');
         }
 
 
         const urlPaymentResultsPage = '/statements/payment/';
+        //        console.log(getApiHost(req).fullHost + urlPaymentResultsPage + getUrlResponseEncoded(body, 'confirmed'));
 
         const service = 'payment/create';
-
+        const random = Math.floor((Math.random() * 1000) + 100);
         const params = {
-            commerceOrder: body.ticketNumber,
+            commerceOrder: random,//body.ticketNumber,
             subject: 'Pago cuenta cliente Id: ' + body.accountId,
             currency: 'CLP',
             amount: body.totalAmount,
             paymentMethod: 1,
             email: 'miguelbecerra01@gmail.com',
-            urlConfirmation: getApiHost(req).fullHost + urlPaymentResultsPage + getUrlResponseEncoded(body, 'confirmed'),
+            urlConfirmation: getApiHost(req).fullHost + urlPaymentResultsPage + 'success' + getUrlResponseEncoded(body, 'confirmed'),
             urlReturn: getApiHost(req).fullHost + urlPaymentResultsPage + getUrlResponseEncoded(body, 'declined'),
             forward_days_after: 1,
             forward_times: 2
@@ -141,6 +151,9 @@ router.post('/payment', async (req, res) => {
                 flowResponse: response.data,
                 urlPayment: url
             };
+
+            console.log('response.data.token', response.data.token);
+
             return res.status(200).send({ message });
 
             //TODO: update the payment into DB

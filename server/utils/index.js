@@ -1,10 +1,11 @@
 
 const getApiHost = (req) => {
 
-    const host = process.env.ENV === 'development' ? 'localhost:8080' : req.get('host');
+    let host = process.env.ENV === 'development' ? '42745f4f.ngrok.io' : req.get('host');
 
     const fullUrl = req.protocol + '://' + host + req.originalUrl;
-    const fullHost = req.protocol + '://' + host;
+    let fullHost = req.protocol + '://' + host;
+    fullHost = 'http://a85d308a.ngrok.io';
     return { fullUrl, fullHost }
 };
 

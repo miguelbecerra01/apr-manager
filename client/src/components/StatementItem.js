@@ -50,7 +50,9 @@ export class StatementItem extends React.Component {
         return (
             <div>
                 <div>
-                    <div>Cuenta</div>
+                    <div>Cuenta
+                    <button onClick={this.onMakePayment}>Pagar tu cuenta</button>
+                    </div>
                     <div>
                         <p>Cuenta:{this.props.account.idAccount}</p>
                         <p>Dirección:{this.state.address}</p>
