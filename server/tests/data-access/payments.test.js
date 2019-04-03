@@ -78,11 +78,12 @@ describe('Tests for payment data-access', () => {
         const providerOrder = 74695
         const idPaymentMethod = paymentMethods[0].id
         const idPaymentType = paymentTypes[0].id
+        const trasaction_id = uuid();
 
         //delete data before insert it again
         await da.deletePaymentsListByIdStatement(idStatement);
 
-        const data = await da.insertPayment(idStatement, totalAmount, tokenProvider, providerOrder, idPaymentMethod, idPaymentType);
+        const data = await da.insertPayment(trasaction_id, idStatement, totalAmount, tokenProvider, providerOrder, idPaymentMethod, idPaymentType);
         expect(data.rowCount).toBe(1);
 
     });

@@ -16,12 +16,16 @@ const send = async (service, params, method = 'GET') => {
         let query = '';
         if (method === 'GET') {
             query = `${url}?${data}&s=${signParams}`;
+            console.log(query);
             res = await axios.get(query);
+            console.log(res);
 
         } else if (method === 'POST') {
             query = `${data}&s=${signParams}`;
             res = await axios.post(url, query);
         }
+
+
 
         return res;
 

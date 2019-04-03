@@ -7,7 +7,6 @@ export const getStatementByAccountId = (statement) => ({
 });
 
 
-
 export const startGetStatementByAccountId = (accountId) => {
     return (dispatch, getState) => {
         return axios.get(`${getApiHost()}/api/statements/account/${accountId}`)
@@ -17,18 +16,3 @@ export const startGetStatementByAccountId = (accountId) => {
             });
     }
 }
-
-export const getMakePayment = (result) => ({
-    type: 'GET_MAKE_PAYMENT',
-    result
-});
-
-export const startMakePayment = (idStatement, accountId, totalAmount, ticketNumber) => {
-    return (dispatch) => {
-        return axios.post(`${getApiHost()}/api/statements/payment`, { idStatement, accountId, totalAmount, ticketNumber })
-            .then(res => {
-                console.log('startMakePayment', res.data);
-                dispatch(getMakePayment(res.data));
-            });
-    };
-};

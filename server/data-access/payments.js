@@ -1,17 +1,18 @@
 const db = require('./db');
 
-const insertPayment = async (idStatement, totalAmount, tokenProvider, providerOrder, idPaymentMethod, idPaymentType) => {
+const insertPayment = async (transactionId, idStatement, totalAmount, tokenProvider, providerOrder, idPaymentMethod, idPaymentType) => {
     try {
 
         //insert into payments
-        const insertPayment = (await db.query(`INSERT INTO payments (amount,id_payment_method,id_payment_type,token_provider,provider_order,id_payment_order_info)
-                                              VALUES ($1,$2,$3,$4,$5,$6)`, [
+        const insertPayment = (await db.query(`INSERT INTO payments (amount,id_payment_method,id_payment_type,token_provider,provider_order,id_payment_order_info, transaction_id)
+                                              VALUES ($1,$2,$3,$4,$5,$6,$7)`, [
                 totalAmount,
                 idPaymentMethod,
                 idPaymentType,
                 tokenProvider,
                 providerOrder,
-                null
+                null,
+                transactionId
             ]));
 
 
@@ -129,12 +130,26 @@ const getPaymentOrderInfoByProviderOrder = async (providerOrder) => {
     }
 }
 
+
+const getPaymentTokenByTransactionId = async (transactionId) => {
+    try {
+        const data = (await db.query('SELECT  token_provider FROM payments WHERE transaction_id=$1', [transactionId])).rows[0];
+        return data;
+
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+
+
 module.exports = {
     getPaymentsMethods,
     getPaymentTypes,
     getPaymentOrderDetailsByProviderOrder,
     getPaymentOrderInfoByProviderOrder,
     getPaymentsByProviderOrder,
+    getPaymentTokenByTransactionId,
     insertPaymentsLists,
     insertPayment,
     insertPaymentOrderInfo,

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as moment from 'moment';
 import * as numeral from 'numeral';
-import { startMakePayment } from '../actions/statements';
+import { startMakePayment } from '../actions/payments';
 
 
 export class StatementItem extends React.Component {
@@ -45,7 +45,9 @@ export class StatementItem extends React.Component {
         const totalAmount = this.state.totalPayment;
         const ticketNumber = this.props.account.ticketNumber;
         const idStatement = this.props.account.idStatement;
-        this.props.startMakePayment(idStatement, accountId, totalAmount, ticketNumber);
+        const idPaymentMethod = 1;
+        const idPaymentType = 1;
+        this.props.startMakePayment(idStatement, accountId, totalAmount, ticketNumber, idPaymentMethod, idPaymentType);
     }
     render() {
         return (
@@ -154,7 +156,7 @@ const mapStateToProps = (state) => {
 
 
 const mapDispatchToProps = (dispatch) => ({
-    startMakePayment: (idStatement, accountId, totalAmount, ticketNumber) => dispatch(startMakePayment(idStatement, accountId, totalAmount, ticketNumber))
+    startMakePayment: (idStatement, accountId, totalAmount, ticketNumber, idPaymentMethod, idPaymentType) => dispatch(startMakePayment(idStatement, accountId, totalAmount, ticketNumber, idPaymentMethod, idPaymentType))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(StatementItem);
