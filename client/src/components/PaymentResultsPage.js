@@ -32,4 +32,7 @@ const mapStateToProps = (state, props) => {
         payments: { ...state.payments }
     }
 }
+
+
+
 export default connect(mapStateToProps)(PaymentResultsPage);

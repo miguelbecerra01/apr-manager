@@ -44,7 +44,8 @@ export class StatementItem extends React.Component {
         const accountId = this.props.account.idAccount;
         const totalAmount = this.state.totalPayment;
         const ticketNumber = this.props.account.ticketNumber;
-        this.props.startMakePayment(accountId, totalAmount, ticketNumber);
+        const idStatement = this.props.account.idStatement;
+        this.props.startMakePayment(idStatement, accountId, totalAmount, ticketNumber);
     }
     render() {
         return (
@@ -153,7 +154,7 @@ const mapStateToProps = (state) => {
 
 
 const mapDispatchToProps = (dispatch) => ({
-    startMakePayment: (accountId, totalAmount, ticketNumber) => dispatch(startMakePayment(accountId, totalAmount, ticketNumber))
+    startMakePayment: (idStatement, accountId, totalAmount, ticketNumber) => dispatch(startMakePayment(idStatement, accountId, totalAmount, ticketNumber))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(StatementItem);

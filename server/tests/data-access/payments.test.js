@@ -73,7 +73,6 @@ describe('Tests for payment data-access', () => {
         const paymentMethods = await da.getPaymentsMethods();
 
         const idStatement = 1
-
         const totalAmount = 2000;
         const tokenProvider = tokenProvider;
         const providerOrder = 74695

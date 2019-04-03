@@ -17,7 +17,7 @@ const { getAllStatements,
     getLastPaymentByAccountId
 } = require('../business-logic/statements');
 
-
+const blPayments = require('../business-logic/payments');
 
 module.exports = router;
 
@@ -116,7 +116,7 @@ const getUrlResponseEncoded = (body, status) => {
 router.post('/payment', async (req, res) => {
     try {
 
-        const body = _.pick(req.body, ['accountId', 'totalAmount', 'ticketNumber']);
+        const body = _.pick(req.body, ['accountId', 'totalAmount', 'ticketNumber', 'idPaymentMethod', 'idPaymentType']);
 
         if (!body.accountId || !body.totalAmount || !body.ticketNumber) {
             return res.status(400).send('bad request');
@@ -152,20 +152,20 @@ router.post('/payment', async (req, res) => {
                 urlPayment: url
             };
 
-            console.log('response.data.token', response.data.token);
+            const insertPaymentStatus = await blPayments.insertPayment(body.idStatement, body.totalAmount, response.data.token, response.data.flowOrder, 1, 2);
+            console.log(insertPaymentStatus);
 
             return res.status(200).send({ message });
-
-            //TODO: update the payment into DB
 
         } else if (response.status === 400 || response.status === 401) {
             return res.status(400).send({ error: response.statusText });
         } else {
-            throw new Error('Unexpected error ocurred. HTTP_CODE', response.status);
+            return res.status(400).send({ error: 'Unexpected error ocurred. HTTP_CODE' + response.status });
         }
 
     } catch (error) {
         return res.status(400).send({ error });
     }
 });
+
 
