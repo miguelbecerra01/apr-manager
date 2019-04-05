@@ -21,41 +21,49 @@ describe('Tests for payment data-access', () => {
     });
 
     test('Should insert payment order details id into table', async () => {
-        let datePayment, media, conversionDate, conversionRate, amount, fee, balance, transferDate;
-        datePayment = '12-12-2012';
-        media = 'transbanc';
-        conversionDate = '12-12-2012';
-        conversionRate = 2.3;
-        amount = 2000;
-        fee = 21.2;
-        balance = 2000;
-        transferDate = '12-12-2012';
 
-        const data = await da.insertPaymentOrderDetails(providerOrder, datePayment, media, conversionDate,
-            conversionRate, amount, fee, balance, transferDate, tokenProvider);
+        const paymentOrderDetails = {
+            providerOrder,
+            datePayment: '12-12-2012',
+            media: 'transbanc',
+            conversionDate: '12-12-2012',
+            conversionRate: 2.3,
+            amount: 2000,
+            fee: 21.2,
+            balance: 2000,
+            transferDate: '12-12-2012',
+            tokenProvider
+        }
 
-        expect(data.rowCount).toBe(1);
+        const data = await da.insertPaymentOrderDetails(paymentOrderDetails);
+
+        expect(parseInt(data.rows[0].id)).toBeGreaterThan(0);
     });
 
     test('Should insert payments order info id into table, payments_order_info', async () => {
         const providerOrder = 74695;
         const idPaymentOrderDetails = await da.getPaymentOrderDetailsByProviderOrder(providerOrder);
 
-        const commerceOrder = '222222';
-        const requestDate = '2016-12-21 12:12:12';
-        const status = 4;
-        const subject = 'test payment';
-        const currency = 'CLP';
-        const amount = 2000;
-        const payer = 'miguelbecerra01@gmail.com';
-        const optional = 'optional info';
-        const pendingInfo = 'pending info';
+        const paymentOrderInfo = {
+            providerOrder,
+            commerceOrder: '222222',
+            requestDate: '2016-12-21 12:12:12',
+            status: 4,
+            subject: 'test payment',
+            currency: 'CLP',
+            amount: 2000,
+            payer: 'miguelbecerra01@gmail.com',
+            optional: 'optional info',
+            pendingInfo: 'pending info',
+            tokenProvider,
+            idPaymentOrderDetails: idPaymentOrderDetails.id
+        };
+
+        const data = await da.insertPaymentOrderInfo(paymentOrderInfo);
 
 
-        const data = await da.insertPaymentOrderInfo(idPaymentOrderDetails.id, providerOrder, commerceOrder,
-            requestDate, status, subject, currency, amount, payer, optional, pendingInfo, tokenProvider);
-
-        expect(data.rowCount).toBe(1);
+        console.log('insertPaymentOrderInfo', data);
+        expect(parseInt(data.rows[0].id)).toBeGreaterThan(0);
 
     });
 
@@ -66,8 +74,6 @@ describe('Tests for payment data-access', () => {
     });
 
     test('Should insert payment into table payments ', async () => {
-
-
 
         const paymentTypes = await da.getPaymentTypes();
         const paymentMethods = await da.getPaymentsMethods();

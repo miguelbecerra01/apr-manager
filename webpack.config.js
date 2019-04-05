@@ -31,6 +31,7 @@ module.exports = (env) => {
             path: publicPath,
             filename: 'bundle.js'
         },
+        //watch: true,
         //https://webpack.js.org/loaders/#transpiling
         //https://webpack.js.org/loaders/babel-loader/
         //loader

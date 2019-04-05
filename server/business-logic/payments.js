@@ -18,4 +18,38 @@ const getPaymentTokenByTransactionId = async (transactionId) => {
     }
 };
 
-module.exports = { insertPayment, getPaymentTokenByTransactionId }
+
+const insertPaymentOrderInfo = async (paymentOrderInfo) => {
+    try {
+
+        const data = (await da.insertPaymentOrderInfo(paymentOrderInfo)).rows[0];
+        return data;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+
+const insertPaymentOrderDetails = async (paymentOrderDetails) => {
+    try {
+        const data = (await da.insertPaymentOrderDetails(paymentOrderDetails)).rows[0];
+
+        return data;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+const updatePaymentByTransactionId = async (transactionId, idPaymentOrderInfo) => {
+    try {
+        const data = (await da.updatePaymentByTransactionId(transactionId, idPaymentOrderInfo));
+
+        return data;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+
+
+module.exports = { insertPayment, insertPaymentOrderInfo, insertPaymentOrderDetails, getPaymentTokenByTransactionId, updatePaymentByTransactionId }

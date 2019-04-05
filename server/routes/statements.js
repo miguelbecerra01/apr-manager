@@ -157,7 +157,7 @@ router.post('/payment', async (req, res) => {
                 urlPayment: url
             };
 
-            const insertPaymentStatus = await blPayments.insertPayment(body.transaction_id, body.idStatement, body.totalAmount, response.data.token, response.data.flowOrder, 1, 2);
+            const insertPaymentStatus = await blPayments.insertPayment(body.transactionId, body.idStatement, body.totalAmount, response.data.token, response.data.flowOrder, 1, 2);
 
             return res.status(200).send({ message });
 
@@ -173,32 +173,105 @@ router.post('/payment', async (req, res) => {
 });
 
 router.get('/payment/status/:transactionId', async (req, res) => {
-    console.log('/payment/status/:transactionId');
-    const { transactionId } = req.params;
-    console.log(transactionId);
-    //consultar a la bd el token de la transaccion.
-    const paymentData = await blPayments.getPaymentTokenByTransactionId(transactionId);
-    const serviceUrl = 'payment/getStatus';
-    const method = 'GET';
-    const params = {
-        token: paymentData.token_provider
+    try {
+        console.log('/payment/status/:transactionId');
+        const { transactionId } = req.params;
+
+        //get the token 
+        const paymentData = await blPayments.getPaymentTokenByTransactionId(transactionId);
+        const serviceUrl = 'payment/getStatus';
+        const method = 'GET';
+
+        if (!paymentData || !paymentData.token_provider) {
+
+            throw new Error('Token provider not found');
+        }
+
+        const params = {
+            token: paymentData.token_provider
+        }
+
+        //call flow api
+        const response = await FlowApi.send(serviceUrl, params, method);
+
+        let paymentOrderDetails = {};
+        let paymentOrderDetailsDbResponse = '';
+        if (response.data.paymentData.date !== null) {
+
+            paymentOrderDetails = {
+                providerOrder: response.data.flowOrder,
+                datePayment: response.data.paymentData.date,
+                media: response.data.paymentData.media,
+                conversionDate: response.data.paymentData.conversionDate,
+                conversionRate: response.data.paymentData.conversionRate,
+                amount: response.data.paymentData.amount,
+                fee: response.data.paymentData.fee,
+                balance: response.data.paymentData.balance,
+                transferDate: response.data.paymentData.transferDate,
+                tokenProvider: paymentData.token_provider
+            };
+
+            paymentOrderDetailsDbResponse = await blPayments.insertPaymentOrderDetails(paymentOrderDetails);
+        }
+
+        const paymentStatus = {
+            1: 'pending_payment', // pendiente de pago
+            2: 'paid', //pagada
+            3: 'rejected', //rechazada
+            4: 'canceled' //anulada
+        };
+
+        //save data response to DB 
+        const paymentOrderInfo = {
+            providerOrder: response.data.flowOrder,
+            commerceOrder: response.data.commerceOrder,
+            requestDate: response.data.requestDate,
+            status: paymentStatus[response.data.status],
+            subject: response.data.subject,
+            currency: response.data.currency,
+            amount: response.data.amount,
+            payer: response.data.payer,
+            optional: JSON.stringify(response.data.optional),
+            pendingInfo: JSON.stringify(response.data.pending_info),
+            tokenProvider: paymentData.token_provider,
+            idPaymentOrderDetails: paymentOrderDetailsDbResponse.id || null
+        };
+
+        const paymentOrderInfoDbResponse = await blPayments.insertPaymentOrderInfo(paymentOrderInfo);
+
+        await blPayments.updatePaymentByTransactionId(transactionId, paymentOrderInfoDbResponse.id);
+
+        //clean the return object
+        cleanPaymentStatusObject(paymentOrderInfo, paymentOrderDetails);
+
+        if (response.status === 200) {
+            return res.status(200).send({ ...paymentOrderInfo, ...paymentOrderDetails });
+        } else if (response.status === 400 || response.status === 401) {
+            return res.status(400).send({ error: response.statusText });
+        } else {
+            return res.status(400).send({ error: 'Unexpected error ocurred. HTTP_CODE ' + response.status });
+        }
+
+    } catch (e) {
+
+        const error = {
+            status_code: 'ERROR',
+            details: e.message
+        }
+        return res.status(400).send({ error });
     }
-
-    console.log(paymentData.token_provider);
-    let response = {};
-
-    response = await FlowApi.send(serviceUrl, params, method);
-    console.log(response.data);
-    if (response.status === 200) {
-        console.log(response.data);
-        return res.status(200).send(response.data);
-
-    } else if (response.status === 400 || response.status === 401) {
-        return res.status(400).send({ error: response.statusText });
-    } else {
-        return res.status(400).send({ error: 'Unexpected error ocurred. HTTP_CODE ' + response.status });
-    }
-
-    return res.status(200).send(transactionId);
 });
+
+const cleanPaymentStatusObject = (paymentOrderInfo, paymentOrderDetails) => {
+    delete paymentOrderInfo.pendingInfo;
+    delete paymentOrderInfo.currency;
+    delete paymentOrderInfo.idPaymentOrderDetails;
+    delete paymentOrderInfo.optional;
+    delete paymentOrderDetails.conversionDate;
+    delete paymentOrderDetails.conversionRate;
+    delete paymentOrderDetails.tokenProvider;
+    delete paymentOrderDetails.providerOrder;
+    delete paymentOrderDetails.amount;
+
+};
 

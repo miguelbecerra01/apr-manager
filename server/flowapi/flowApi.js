@@ -16,17 +16,12 @@ const send = async (service, params, method = 'GET') => {
         let query = '';
         if (method === 'GET') {
             query = `${url}?${data}&s=${signParams}`;
-            console.log(query);
             res = await axios.get(query);
-            console.log(res);
 
         } else if (method === 'POST') {
             query = `${data}&s=${signParams}`;
             res = await axios.post(url, query);
         }
-
-
-
         return res;
 
     } catch (error) {
@@ -67,7 +62,6 @@ const sign = (params) => {
 const encodeQuerystring = (params, encode = false) => {
 
     const querystring = qs.stringify(params, { encode });
-    // console.log(querystring);
     return querystring;
 };
 

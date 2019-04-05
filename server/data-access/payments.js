@@ -65,11 +65,11 @@ const getPaymentTypes = async () => {
     }
 };
 
-const insertPaymentOrderDetails = async (providerOrder, datePayment, media, conversionDate, conversionRate, amount, fee, balance, transferDate, tokenProvider) => {
+const insertPaymentOrderDetails = async ({ providerOrder, datePayment, media, conversionDate, conversionRate, amount, fee, balance, transferDate, tokenProvider }) => {
     try {
         const data = (await db.query(`INSERT INTO payments_order_details (provider_order,date_payment,media,conversion_date,
                                      conversion_rate,amount,fee,balance,transfer_date,token_provider) 
-                                    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+                                    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) returning id`,
             [providerOrder, datePayment, media, conversionDate,
                 conversionRate, amount, fee, balance, transferDate, tokenProvider]
         ));
@@ -82,11 +82,11 @@ const insertPaymentOrderDetails = async (providerOrder, datePayment, media, conv
 };
 
 
-const insertPaymentOrderInfo = async (idPaymentOrderDetails, providerOrder, commerceOrder, requestDate, status, subject, currency, amount, payer, optional, pendingInfo, tokenProvider) => {
+const insertPaymentOrderInfo = async ({ providerOrder, commerceOrder, requestDate, status, subject, currency, amount, payer, optional, pendingInfo, tokenProvider, idPaymentOrderDetails }) => {
     try {
 
         const data = (await db.query(`INSERT INTO payments_order_info (id_payment_order_details,provider_order,commerce_order,
-                                request_date,status,subject,currency,amount,payer,optional,pending_info,token_provider) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`,
+                                request_date,status,subject,currency,amount,payer,optional,pending_info,token_provider) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) returning id`,
             [idPaymentOrderDetails, providerOrder, commerceOrder, requestDate, status, subject, currency, amount, payer, optional, pendingInfo, tokenProvider]
         ));
 
@@ -142,6 +142,16 @@ const getPaymentTokenByTransactionId = async (transactionId) => {
 }
 
 
+const updatePaymentByTransactionId = async (transactionId, idPaymentOrderInfo) => {
+    try {
+        const data = (await db.query('UPDATE payments SET id_payment_order_info = $1 WHERE transaction_id = $2', [idPaymentOrderInfo, transactionId]));
+
+        return data;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 
 module.exports = {
     getPaymentsMethods,
@@ -154,5 +164,6 @@ module.exports = {
     insertPayment,
     insertPaymentOrderInfo,
     insertPaymentOrderDetails,
-    deletePaymentsListByIdStatement
+    deletePaymentsListByIdStatement,
+    updatePaymentByTransactionId
 }; 

@@ -15,9 +15,10 @@ export const getPaymentStatus = (payments) => ({
 export const startGetPaymentStatus = (transactionId) => {
     return (dispatch) => {
         return axios.get(`${getApiHost()}/api/statements/payment/status/${transactionId}`)
-            .then((res) => {
-                console.log('startGetPaymentStatus');
+            .then(res => {
                 dispatch(getPaymentStatus(res.data));
+            }).catch(error => {
+                console.log('error', error);
             });
     }
 }
@@ -26,7 +27,6 @@ export const startMakePayment = (idStatement, accountId, totalAmount, ticketNumb
     return (dispatch) => {
         return axios.post(`${getApiHost()}/api/statements/payment`, { idStatement, accountId, totalAmount, ticketNumber, idPaymentMethod, idPaymentType })
             .then(res => {
-                console.log('startMakePayment', res.data);
                 const payments = res.data;
                 dispatch(getMakePayment(payments));
             });

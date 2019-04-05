@@ -6,10 +6,14 @@ import StatementItem from './StatementItem';
 export class StatementDashboardPage extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            isLoading: false
+        }
     }
 
     componentDidUpdate() {
-        console.log(this.props.payments);
+        // console.log(this.props.payments);
+        //go to payment provider site
         if (this.props.payments.hasOwnProperty('urlPayment')) {
             window.location = this.props.payments.urlPayment;
         }
@@ -26,7 +30,7 @@ export class StatementDashboardPage extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-    console.log('StatementDashboardPage', state)
+    // console.log('StatementDashboardPage', state)
     return {
         statements: state.statements,
         payments: { ...state.payments.message }

@@ -5,13 +5,10 @@ const getApiHost = (req) => {
 
     const fullUrl = req.protocol + '://' + host + req.originalUrl;
     let fullHost = req.protocol + '://' + host;
-    fullHost = 'http://a85d308a.ngrok.io';
+    fullHost = 'http://720b8efc.ngrok.io';
     return { fullUrl, fullHost }
 };
 
-const signHmac256 = (payload) => {
-
-};
 
 
 module.exports = { getApiHost }

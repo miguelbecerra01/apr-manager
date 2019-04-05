@@ -15,7 +15,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 require('dotenv').config({ path: '.env.development' });
 
-
 app.use(express.static(publicPath));
 
 app.use(function (req, res, next) {
@@ -26,13 +25,10 @@ app.use(function (req, res, next) {
 
 //show the dashboard
 app.get('/^((?!api).)*$/', (req, res) => {
-    console.log('GET!');
     res.sendFile(path.join(publicPath, 'index.html'));
 });
 
 app.post('/statements/payment/*', (req, res) => {
-    console.log('POST!', req.body.token);
-    res.setHeader('Token', req.body.token);
     res.sendFile(path.join(publicPath, 'index.html'));
 
 });
